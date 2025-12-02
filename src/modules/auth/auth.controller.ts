@@ -1,6 +1,7 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import { IsPublic } from '../../common/decorators/is-public.decorator';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 
@@ -15,5 +16,11 @@ export class AuthController {
   @ApiOkResponse({ description: 'User logged in successfully' })
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+  @IsPublic()
+  @Post('register')
+  @ApiOkResponse({ description: 'User registered successfully' })
+  register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
   }
 }
