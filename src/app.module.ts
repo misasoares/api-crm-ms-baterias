@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { CustomersModule } from './modules/customers/customers.module.js';
 import { OrdersModule } from './modules/orders/orders.module.js';
+import { WhatsappModule } from './modules/whatsapp/whatsapp.module.js';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { OrdersModule } from './modules/orders/orders.module.js';
     AuthModule,
     CustomersModule,
     OrdersModule,
+    WhatsappModule,
   ],
   controllers: [AppController],
   providers: [
