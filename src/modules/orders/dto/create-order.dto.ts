@@ -5,7 +5,9 @@ import {
   IsString,
   IsUUID,
   IsOptional,
+  Matches,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { OrderType } from '@prisma/client';
 
 export class CreateOrderDto {
@@ -34,8 +36,12 @@ export class CreateOrderDto {
   @IsOptional()
   customerName?: string;
 
-  @ApiProperty({ example: '11999999999', required: false })
+  @ApiProperty({ example: '5551999999999', required: false })
+  @Transform(({ value }: { value: string }) => value?.replace(/\D/g, ''))
   @IsString()
   @IsOptional()
+  @Matches(/^55\d{11}$/, {
+    message: 'Phone must be in format 55XXXXXXXXXXX (13 digits)',
+  })
   customerPhone?: string;
 }
