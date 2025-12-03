@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 
@@ -22,7 +22,9 @@ export class OrdersService {
       });
 
       if (existingCustomer) {
-        customerId = existingCustomer.id;
+        throw new ConflictException(
+          'Phone number already linked to another customer',
+        );
       } else {
         const newCustomer = await this.prisma.customer.create({
           data: {
