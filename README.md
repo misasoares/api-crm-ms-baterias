@@ -25,3 +25,25 @@ CRM simples para gestão de clientes e pedidos para envio automatico de mensagem
 ### Build
 
 - `npm run build`: Compila a aplicação para produção.
+
+## Tratamento de Mensagens
+
+A API é responsável por fornecer feedback claro sobre o resultado das operações.
+
+### Sucesso
+
+Em caso de sucesso, a API retorna um objeto contendo:
+
+- `success`: `true`
+- `code`: Código HTTP (ex: 200, 201)
+- `data`: Dados da resposta (se houver)
+- `message`: Mensagem descritiva (ex: "Pedido criado com sucesso")
+
+### Erro
+
+Em caso de erro, a API retorna um objeto contendo:
+
+- `success`: `false`
+- `code`: Código HTTP do erro (ex: 400, 404, 409)
+- `message`: Mensagem descritiva do erro (ex: "Este número de telefone já está vinculado a outro cliente.")
+- `invalidFields`: Lista de campos inválidos (em caso de erro de validação)
