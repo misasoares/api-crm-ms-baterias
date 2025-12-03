@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OrdersController } from './orders.controller';
-import { OrdersService } from './orders.service';
-import { PrismaModule } from '../../prisma/prisma.module';
-import { PrismaService } from '../../prisma/prisma.service';
-import { OrderBuilder } from '../../../test/builders/order.builder';
-import { CustomerBuilder } from '../../../test/builders/customer.builder';
+import { OrdersController } from './orders.controller.js';
+import { OrdersService } from './orders.service.js';
+import { PrismaModule } from '../../prisma/prisma.module.js';
+import { PrismaService } from '../../prisma/prisma.service.js';
+import { OrderBuilder } from '../../../test/builders/order.builder.js';
+import { CustomerBuilder } from '../../../test/builders/customer.builder.js';
 import { OrderType } from '@prisma/client';
 
 describe('OrdersController Integration', () => {

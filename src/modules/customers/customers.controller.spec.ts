@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CustomersController } from './customers.controller';
-import { CustomersService } from './customers.service';
-import { PrismaModule } from '../../prisma/prisma.module';
-import { PrismaService } from '../../prisma/prisma.service';
-import { CustomerBuilder } from '../../../test/builders/customer.builder';
+import { CustomersController } from './customers.controller.js';
+import { CustomersService } from './customers.service.js';
+import { PrismaModule } from '../../prisma/prisma.module.js';
+import { PrismaService } from '../../prisma/prisma.service.js';
+import { CustomerBuilder } from '../../../test/builders/customer.builder.js';
 
 describe('CustomersController Integration', () => {
   let controller: CustomersController;

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { PrismaModule } from '../../prisma/prisma.module';
-import { PrismaService } from '../../prisma/prisma.service';
-import { UserBuilder } from '../../../test/builders/user.builder';
+import { UsersController } from './users.controller.js';
+import { UsersService } from './users.service.js';
+import { PrismaModule } from '../../prisma/prisma.module.js';
+import { PrismaService } from '../../prisma/prisma.service.js';
+import { UserBuilder } from '../../../test/builders/user.builder.js';
 
 describe('UsersController Integration', () => {
   let controller: UsersController;

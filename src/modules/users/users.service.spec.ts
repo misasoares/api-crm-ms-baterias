@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
-import { PrismaModule } from '../../prisma/prisma.module';
-import { PrismaService } from '../../prisma/prisma.service';
-import { UserBuilder } from '../../../test/builders/user.builder';
+import { UsersService } from './users.service.js';
+import { PrismaModule } from '../../prisma/prisma.module.js';
+import { PrismaService } from '../../prisma/prisma.service.js';
+import { UserBuilder } from '../../../test/builders/user.builder.js';
 
 describe('UsersService Integration', () => {
   let service: UsersService;

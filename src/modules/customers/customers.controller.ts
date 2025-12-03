@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param, NotFoundException, Query } from '@nestjs/common';
-import { CustomersService } from './customers.service';
-import { CreateCustomerDto } from './dto/create-customer.dto';
+import { CustomersService } from './customers.service.js';
+import { CreateCustomerDto } from './dto/create-customer.dto.js';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
-import { CustomerEntity } from './entities/customer.entity';
+import { CustomerEntity } from './entities/customer.entity.js';
 
 @ApiTags('Customers')
 @Controller('customers')
