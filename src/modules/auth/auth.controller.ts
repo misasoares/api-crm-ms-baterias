@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
@@ -22,5 +22,14 @@ export class AuthController {
   @ApiOkResponse({ description: 'User registered successfully' })
   register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
+  }
+
+  @Get('verify-access-token')
+  @ApiOkResponse({ description: 'Token is valid' })
+  verifyAccessToken() {
+    // The JwtAuthGuard verifies the token before this method is called.
+    // If the token is invalid or missing, the guard throws a 401 Unauthorized error.
+    // If execution reaches here, the token is valid.
+    return true;
   }
 }
