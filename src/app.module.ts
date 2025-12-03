@@ -9,15 +9,19 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { CustomersModule } from './modules/customers/customers.module.js';
 import { OrdersModule } from './modules/orders/orders.module.js';
 import { WhatsappModule } from './modules/whatsapp/whatsapp.module.js';
+import { OilRemindersModule } from './modules/oil-reminders/oil-reminders.module.js';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     PrismaModule,
     UsersModule,
     AuthModule,
     CustomersModule,
     OrdersModule,
     WhatsappModule,
+    OilRemindersModule,
   ],
   controllers: [AppController],
   providers: [

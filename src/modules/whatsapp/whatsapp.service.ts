@@ -23,12 +23,12 @@ export class WhatsappService {
     }
   }
 
-  async sendMessage(phone: string) {
+  async sendMessage(phone: string, body?: string) {
     const endpoint = `${this.apiUrl}/chat/send/text`;
 
     const payload = {
       Phone: phone,
-      Body: 'teste automação misa',
+      Body: body || 'teste automação misa',
       Id: randomUUID(),
     };
 

@@ -35,13 +35,36 @@ enum OrderType {
   OIL
 }
 
+enum ReminderStatus {
+  PENDING // Aguardando primeira tentativa
+  SENT // Enviado com sucesso
+  CANCELLED // Cancelado por nova troca
+  FAILED // Falhou após 3 tentativas
+}
+
 model Order {
-  id         String    @id @default(uuid())
+  id         String             @id @default(uuid())
   type       OrderType
   vehicle    String
   product    String
-  customer   Customer  @relation(fields: [customerId], references: [id])
+  customer   Customer           @relation(fields: [customerId], references: [id])
   customerId String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  reminder   OilChangeReminder?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+}
+
+model OilChangeReminder {
+  id            String         @id @default(uuid())
+  order         Order          @relation(fields: [orderId], references: [id])
+  orderId       String         @unique
+  scheduledFor  DateTime // Data agendada (6 meses + ajuste para dia útil)
+  status        ReminderStatus @default(PENDING)
+  sentAt        DateTime? // Quando foi enviado com sucesso
+  messageId     String? // ID da mensagem WhatsApp
+  cancelledAt   DateTime? // Quando foi cancelado
+  attempts      Int            @default(0) // Contador de tentativas
+  lastAttemptAt DateTime? // Data da última tentativa
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
