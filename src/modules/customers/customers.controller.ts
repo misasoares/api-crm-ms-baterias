@@ -6,9 +6,11 @@ import {
   Param,
   NotFoundException,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { CustomersService } from './customers.service.js';
 import { CreateCustomerDto } from './dto/create-customer.dto.js';
+import { UpdateCustomerDto } from './dto/update-customer.dto.js';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { CustomerEntity } from './entities/customer.entity.js';
 
@@ -42,5 +44,18 @@ export class CustomersController {
       throw new NotFoundException(`Customer with ID ${id} not found`);
     }
     return new CustomerEntity(customer);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({ type: CustomerEntity })
+  async update(
+    @Param('id') id: string,
+    @Body() updateCustomerDto: UpdateCustomerDto,
+  ) {
+    const customer = await this.customersService.update(id, updateCustomerDto);
+    return {
+      message: 'Cliente atualizado com sucesso',
+      data: new CustomerEntity(customer),
+    };
   }
 }

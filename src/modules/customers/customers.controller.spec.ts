@@ -67,4 +67,16 @@ describe('CustomersController Integration', () => {
       expect(result.id).toBe(customer.id);
     });
   });
+  describe('update', () => {
+    it('should update a customer', async () => {
+      const customer = await new CustomerBuilder().build(prisma);
+      const updateCustomerDto = {
+        name: 'Updated Customer',
+      };
+
+      const result = await controller.update(customer.id, updateCustomerDto);
+      expect(result).toBeDefined();
+      expect(result.data.name).toBe(updateCustomerDto.name);
+    });
+  });
 });

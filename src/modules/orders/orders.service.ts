@@ -51,6 +51,9 @@ export class OrdersService {
       include: {
         customer: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
