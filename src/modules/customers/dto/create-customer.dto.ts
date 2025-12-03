@@ -1,5 +1,6 @@
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsString, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateCustomerDto {
   @ApiProperty({ example: 'Jane Doe' })
@@ -7,9 +8,12 @@ export class CreateCustomerDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: '+5511999999999' })
+  @ApiProperty({ example: '5551999999999' })
+  @Transform(({ value }: { value: string }) => value.replace(/\D/g, ''))
   @IsString()
   @IsNotEmpty()
-  @MinLength(10)
+  @Matches(/^55\d{11}$/, {
+    message: 'Phone must be in format 55XXXXXXXXXXX (13 digits)',
+  })
   phone: string;
 }
