@@ -7,15 +7,29 @@ import { OrderBuilder } from '../../../test/builders/order.builder.js';
 import { CustomerBuilder } from '../../../test/builders/customer.builder.js';
 import { OrderType } from '@prisma/client';
 
+import { OilRemindersService } from '../oil-reminders/oil-reminders.service.js';
+import { jest } from '@jest/globals';
+
 describe('OrdersController Integration', () => {
   let controller: OrdersController;
   let prisma: PrismaService;
+
+  const mockOilRemindersService = {
+    createReminderForOrder: jest.fn(),
+    cancelPendingReminders: jest.fn(),
+  };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PrismaModule],
       controllers: [OrdersController],
-      providers: [OrdersService],
+      providers: [
+        OrdersService,
+        {
+          provide: OilRemindersService,
+          useValue: mockOilRemindersService,
+        },
+      ],
     }).compile();
 
     controller = module.get<OrdersController>(OrdersController);

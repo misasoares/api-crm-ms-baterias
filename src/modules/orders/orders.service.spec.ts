@@ -6,6 +6,7 @@ import { OrderBuilder } from '../../../test/builders/order.builder.js';
 import { CustomerBuilder } from '../../../test/builders/customer.builder.js';
 import { OrderType } from '@prisma/client';
 import { OilRemindersService } from '../oil-reminders/oil-reminders.service.js';
+import { jest } from '@jest/globals';
 
 describe('OrdersService Integration', () => {
   let service: OrdersService;
