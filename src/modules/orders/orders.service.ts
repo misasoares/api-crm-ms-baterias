@@ -23,7 +23,7 @@ export class OrdersService {
 
       if (existingCustomer) {
         throw new ConflictException(
-          'Phone number already linked to another customer',
+          'Este número de telefone já está vinculado a outro cliente.',
         );
       } else {
         const newCustomer = await this.prisma.customer.create({
