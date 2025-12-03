@@ -41,7 +41,7 @@ describe('CustomersController Integration', () => {
 
       const result = await controller.create(createCustomerDto);
       expect(result).toBeDefined();
-      expect(result.name).toBe(createCustomerDto.name);
+      expect(result.data.name).toBe(createCustomerDto.name);
     });
   });
 

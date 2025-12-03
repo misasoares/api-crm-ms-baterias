@@ -12,6 +12,7 @@ export interface Response<T> {
   success: boolean;
   data: T;
   code: number;
+  message: string;
 }
 
 @Injectable()
@@ -21,11 +22,34 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     next: CallHandler,
   ): Observable<Response<T>> {
     return next.handle().pipe(
-      map((data: T) => ({
-        success: true,
-        data: data,
-        code: context.switchToHttp().getResponse<ExpressResponse>().statusCode,
-      })),
+      map((res: any) => {
+        const response = context.switchToHttp().getResponse<ExpressResponse>();
+        const statusCode = response.statusCode;
+
+        let message = 'Operação realizada com sucesso';
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        let data = res;
+
+        if (
+          res &&
+          typeof res === 'object' &&
+          'message' in res &&
+          'data' in res
+        ) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          message = res.message;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          data = res.data;
+        }
+
+        return {
+          success: true,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          data,
+          code: statusCode,
+          message,
+        };
+      }),
     );
   }
 }

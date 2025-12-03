@@ -21,7 +21,10 @@ export class CustomersController {
   @ApiCreatedResponse({ type: CustomerEntity })
   async create(@Body() createCustomerDto: CreateCustomerDto) {
     const customer = await this.customersService.create(createCustomerDto);
-    return new CustomerEntity(customer);
+    return {
+      message: 'Cliente criado com sucesso',
+      data: new CustomerEntity(customer),
+    };
   }
 
   @Get()

@@ -21,14 +21,22 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOkResponse({ description: 'User logged in successfully' })
-  login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  async login(@Body() loginDto: LoginDto) {
+    const data = await this.authService.login(loginDto);
+    return {
+      message: 'Login realizado com sucesso',
+      data,
+    };
   }
   @IsPublic()
   @Post('register')
   @ApiOkResponse({ description: 'User registered successfully' })
-  register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto);
+  async register(@Body() createUserDto: CreateUserDto) {
+    const data = await this.authService.register(createUserDto);
+    return {
+      message: 'Usuário registrado com sucesso',
+      data,
+    };
   }
 
   @Get('verify-access-token')

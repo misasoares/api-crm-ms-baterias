@@ -21,7 +21,10 @@ export class OrdersController {
   @ApiCreatedResponse({ type: OrderEntity })
   async create(@Body() createOrderDto: CreateOrderDto) {
     const order = await this.ordersService.create(createOrderDto);
-    return new OrderEntity(order);
+    return {
+      message: 'Pedido criado com sucesso',
+      data: new OrderEntity(order),
+    };
   }
 
   @Get()
@@ -43,6 +46,9 @@ export class OrdersController {
   @Delete(':id')
   @ApiOkResponse({ description: 'Order deleted successfully' })
   async remove(@Param('id') id: string) {
-    return this.ordersService.remove(id);
+    await this.ordersService.remove(id);
+    return {
+      message: 'Pedido removido com sucesso',
+    };
   }
 }

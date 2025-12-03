@@ -47,7 +47,7 @@ describe('OrdersController Integration', () => {
 
       const result = await controller.create(createOrderDto);
       expect(result).toBeDefined();
-      expect(result.vehicle).toBe(createOrderDto.vehicle);
+      expect(result.data.vehicle).toBe(createOrderDto.vehicle);
     });
   });
 
