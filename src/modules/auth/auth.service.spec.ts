@@ -6,7 +6,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from '../../prisma/prisma.module.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { UserBuilder } from '../../../test/builders/user.builder.js';
-import * as bcrypt from 'bcrypt';
 
 describe('AuthService Integration', () => {
   let service: AuthService;
@@ -51,8 +50,8 @@ describe('AuthService Integration', () => {
         .build(prisma);
 
       const result = await service.validateUser(user.email, password);
-      expect(result).toBeDefined();
-      expect(result.email).toBe(user.email);
+      expect(result).not.toBeNull();
+      expect(result!.email).toBe(user.email);
     });
 
     it('should return null if password is wrong', async () => {
@@ -65,7 +64,10 @@ describe('AuthService Integration', () => {
     });
 
     it('should return null if user not found', async () => {
-      const result = await service.validateUser('nonexistent@example.com', 'password');
+      const result = await service.validateUser(
+        'nonexistent@example.com',
+        'password',
+      );
       expect(result).toBeNull();
     });
   });
@@ -99,7 +101,9 @@ describe('AuthService Integration', () => {
       const result = await service.register(registerDto);
       expect(result).toHaveProperty('access_token');
 
-      const user = await prisma.user.findUnique({ where: { email: registerDto.email } });
+      const user = await prisma.user.findUnique({
+        where: { email: registerDto.email },
+      });
       expect(user).toBeDefined();
       expect(user?.name).toBe(registerDto.name);
     });

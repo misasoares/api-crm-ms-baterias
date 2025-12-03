@@ -41,7 +41,9 @@ describe('CustomersService Integration', () => {
       expect(result).toBeDefined();
       expect(result.name).toBe(createCustomerDto.name);
 
-      const customer = await prisma.customer.findFirst({ where: { phone: createCustomerDto.phone } });
+      const customer = await prisma.customer.findFirst({
+        where: { phone: createCustomerDto.phone },
+      });
       expect(customer).toBeDefined();
     });
   });
@@ -49,7 +51,10 @@ describe('CustomersService Integration', () => {
   describe('findAll', () => {
     it('should return all customers', async () => {
       await new CustomerBuilder().withName('C1').build(prisma);
-      await new CustomerBuilder().withName('C2').withPhone('0987654321').build(prisma);
+      await new CustomerBuilder()
+        .withName('C2')
+        .withPhone('0987654321')
+        .build(prisma);
 
       const result = await service.findAll();
       expect(result).toHaveLength(2);

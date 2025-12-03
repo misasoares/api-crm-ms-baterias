@@ -11,7 +11,9 @@ export class OrdersService {
 
     if (!customerId) {
       if (!createOrderDto.customerName || !createOrderDto.customerPhone) {
-        throw new Error('Customer name and phone are required when customerId is not provided');
+        throw new Error(
+          'Customer name and phone are required when customerId is not provided',
+        );
       }
 
       // Check if customer exists by phone to avoid unique constraint error
@@ -37,7 +39,7 @@ export class OrdersService {
         type: createOrderDto.type,
         vehicle: createOrderDto.vehicle,
         product: createOrderDto.product,
-        customerId: customerId!,
+        customerId: customerId,
       },
     });
   }

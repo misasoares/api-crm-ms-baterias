@@ -10,7 +10,13 @@ import { CustomersModule } from './modules/customers/customers.module.js';
 import { OrdersModule } from './modules/orders/orders.module.js';
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, CustomersModule, OrdersModule],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    AuthModule,
+    CustomersModule,
+    OrdersModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

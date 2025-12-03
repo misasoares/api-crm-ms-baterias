@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, UseInterceptors, ClassSerializerInterceptor, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from './users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';

@@ -72,7 +72,9 @@ describe('AuthController Integration', () => {
       const result = await controller.register(registerDto);
       expect(result).toHaveProperty('access_token');
 
-      const user = await prisma.user.findUnique({ where: { email: registerDto.email } });
+      const user = await prisma.user.findUnique({
+        where: { email: registerDto.email },
+      });
       expect(user).toBeDefined();
     });
   });

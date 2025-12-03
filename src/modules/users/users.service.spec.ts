@@ -42,7 +42,9 @@ describe('UsersService Integration', () => {
       expect(result).toBeDefined();
       expect(result.email).toBe(createUserDto.email);
 
-      const user = await prisma.user.findUnique({ where: { email: createUserDto.email } });
+      const user = await prisma.user.findUnique({
+        where: { email: createUserDto.email },
+      });
       expect(user).toBeDefined();
     });
   });

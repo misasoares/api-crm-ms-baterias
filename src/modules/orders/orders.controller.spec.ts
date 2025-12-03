@@ -65,7 +65,9 @@ describe('OrdersController Integration', () => {
   describe('findOne', () => {
     it('should return an order by id', async () => {
       const customer = await new CustomerBuilder().build(prisma);
-      const order = await new OrderBuilder().withCustomerId(customer.id).build(prisma);
+      const order = await new OrderBuilder()
+        .withCustomerId(customer.id)
+        .build(prisma);
 
       const result = await controller.findOne(order.id);
       expect(result).toBeDefined();

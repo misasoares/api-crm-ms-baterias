@@ -25,12 +25,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let message = 'Internal server error';
     if (typeof exceptionResponse === 'string') {
       message = exceptionResponse;
-    } else if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
-        message = (exceptionResponse as any).message || (exceptionResponse as any).error || message;
-        // If message is an array (class-validator), join it
-        if (Array.isArray(message)) {
-            message = message.join(', ');
-        }
+    } else if (
+      typeof exceptionResponse === 'object' &&
+      exceptionResponse !== null
+    ) {
+      const errorResponse = exceptionResponse as {
+        message?: string | string[];
+        error?: string;
+      };
+      message =
+        (Array.isArray(errorResponse.message)
+          ? errorResponse.message.join(', ')
+          : errorResponse.message) ||
+        errorResponse.error ||
+        message;
     }
 
     response.status(status).json({

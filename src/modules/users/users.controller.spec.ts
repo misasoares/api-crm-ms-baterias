@@ -58,7 +58,9 @@ describe('UsersController Integration', () => {
 
   describe('findOne', () => {
     it('should return a user by id', async () => {
-      const user = await new UserBuilder().withEmail('findone@example.com').build(prisma);
+      const user = await new UserBuilder()
+        .withEmail('findone@example.com')
+        .build(prisma);
 
       const result = await controller.findOne(user.uid);
       expect(result).toBeDefined();

@@ -1,5 +1,11 @@
- import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString, IsUUID, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  IsOptional,
+} from 'class-validator';
 import { OrderType } from '@prisma/client';
 
 export class CreateOrderDto {
