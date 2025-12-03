@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "npm run test:db:up && dotenv -e .env.test -- jest --runInBand; npm run test:db:down",
+    "test": "npm run test:db:up && dotenv -e .env.test -- node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand; npm run test:db:down",
     "test:db:up": "docker compose --profile test up -d postgres_test && sleep 3 && dotenv -e .env.test -- npx prisma migrate dev --name init",
     "test:db:down": "docker compose --profile test stop postgres_test && docker compose --profile test rm -f postgres_test",
     "test:watch": "dotenv -e .env.test -- jest --watch",
@@ -81,7 +81,11 @@
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(t|j)s$": ["ts-jest", { "useESM": true }]
+    },
+    "extensionsToTreatAsEsm": [".ts"],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
