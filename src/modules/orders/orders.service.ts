@@ -55,4 +55,10 @@ export class OrdersService {
       where: { id },
     });
   }
+
+  remove(id: string) {
+    return this.prisma.order.delete({
+      where: { id },
+    });
+  }
 }

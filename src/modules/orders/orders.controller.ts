@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, NotFoundException, Delete } from '@nestjs/common';
 import { OrdersService } from './orders.service.js';
 import { CreateOrderDto } from './dto/create-order.dto.js';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
@@ -31,5 +31,10 @@ export class OrdersController {
       throw new NotFoundException(`Order with ID ${id} not found`);
     }
     return new OrderEntity(order);
+  }
+  @Delete(':id')
+  @ApiOkResponse({ description: 'Order deleted successfully' })
+  async remove(@Param('id') id: string) {
+    return this.ordersService.remove(id);
   }
 }
