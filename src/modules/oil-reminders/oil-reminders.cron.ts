@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { OilRemindersService } from './oil-reminders.service.js';
 import { WhatsappService } from '../whatsapp/whatsapp.service.js';
 
@@ -12,10 +12,15 @@ export class OilRemindersCronService {
     private whatsappService: WhatsappService,
   ) {}
 
-  // Executar todos os dias às 9h, de segunda a sexta
-  @Cron('0 9 * * 1-5', {
-    timeZone: 'America/Sao_Paulo',
-  })
+  // Executar a cada minuto em desenvolvimento, ou às 9h (seg-sex) em produção
+  @Cron(
+    process.env.NODE_ENV === 'development'
+      ? CronExpression.EVERY_MINUTE
+      : '0 9 * * 1-5',
+    {
+      timeZone: 'America/Sao_Paulo',
+    },
+  )
   async processPendingReminders() {
     this.logger.log('Iniciando processamento de lembretes pendentes...');
 

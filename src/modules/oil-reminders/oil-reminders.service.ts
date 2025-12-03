@@ -43,8 +43,15 @@ export class OilRemindersService {
    * Calcula a data agendada (6 meses + ajuste para dia útil)
    */
   private calculateScheduledDate(orderDate: Date): Date {
-    // Adicionar 6 meses
     const date = new Date(orderDate);
+
+    // Em desenvolvimento: agendar para 2 minutos depois
+    if (process.env.NODE_ENV === 'development') {
+      date.setMinutes(date.getMinutes() + 2);
+      return date;
+    }
+
+    // Adicionar 6 meses
     date.setMonth(date.getMonth() + 6);
 
     // Ajustar para dia útil se cair em fim de semana
