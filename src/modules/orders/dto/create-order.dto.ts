@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+ import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty, IsString, IsUUID, IsOptional } from 'class-validator';
 import { OrderType } from '@prisma/client';
 
 export class CreateOrderDto {
@@ -18,8 +18,18 @@ export class CreateOrderDto {
   @IsNotEmpty()
   product: string;
 
-  @ApiProperty({ example: 'uuid-of-customer' })
+  @ApiProperty({ example: 'uuid-of-customer', required: false })
   @IsUUID()
-  @IsNotEmpty()
-  customerId: string;
+  @IsOptional()
+  customerId?: string;
+
+  @ApiProperty({ example: 'John Doe', required: false })
+  @IsString()
+  @IsOptional()
+  customerName?: string;
+
+  @ApiProperty({ example: '11999999999', required: false })
+  @IsString()
+  @IsOptional()
+  customerPhone?: string;
 }

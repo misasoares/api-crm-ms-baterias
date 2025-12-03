@@ -12,7 +12,17 @@ export class CustomersService {
     });
   }
 
-  findAll() {
+  findAll(search?: string) {
+    if (search) {
+      return this.prisma.customer.findMany({
+        where: {
+          name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+      });
+    }
     return this.prisma.customer.findMany();
   }
 

@@ -49,7 +49,7 @@ describe('CustomersService Integration', () => {
   describe('findAll', () => {
     it('should return all customers', async () => {
       await new CustomerBuilder().withName('C1').build(prisma);
-      await new CustomerBuilder().withName('C2').build(prisma);
+      await new CustomerBuilder().withName('C2').withPhone('0987654321').build(prisma);
 
       const result = await service.findAll();
       expect(result).toHaveLength(2);

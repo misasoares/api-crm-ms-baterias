@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, NotFoundException, Query } from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
@@ -18,8 +18,8 @@ export class CustomersController {
 
   @Get()
   @ApiOkResponse({ type: CustomerEntity, isArray: true })
-  async findAll() {
-    const customers = await this.customersService.findAll();
+  async findAll(@Query('search') search?: string) {
+    const customers = await this.customersService.findAll(search);
     return customers.map((customer) => new CustomerEntity(customer));
   }
 
