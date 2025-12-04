@@ -223,11 +223,10 @@ export class OilRemindersService {
   private getMessageTemplate(customerName: string, vehicle: string): string {
     return `Olá ${customerName}! 👋
 
-Já fazem 6 meses desde a última troca de óleo do seu *${vehicle}*.
+Notamos que já faz 6 meses desde a última manutenção do seu *${vehicle}*.
 
-É importante manter a manutenção em dia para garantir o melhor desempenho e durabilidade do seu veículo! 🚗
-
-Gostaria de agendar uma nova troca de óleo? Entre em contato conosco!`;
+Que tal trazer o carro para uma revisão do óleo? 🚗✨
+`;
   }
 
   /**
