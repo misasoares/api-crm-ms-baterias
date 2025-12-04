@@ -10,10 +10,12 @@ import { CustomersModule } from './modules/customers/customers.module.js';
 import { OrdersModule } from './modules/orders/orders.module.js';
 import { WhatsappModule } from './modules/whatsapp/whatsapp.module.js';
 import { OilRemindersModule } from './modules/oil-reminders/oil-reminders.module.js';
+import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(),
     PrismaModule,
     UsersModule,
