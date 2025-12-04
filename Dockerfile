@@ -3,23 +3,23 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Copiar arquivos de dependência
+# Copiar dependências
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Instalar dependências
+# Instalar
 RUN npm ci
 
-# Gerar o Prisma Client
+# Gerar cliente
 RUN npx prisma generate
 
-# Copiar código fonte
+# Copiar código
 COPY . .
 
 # Buildar
 RUN npm run build
 
-# Limpar dependências de desenvolvimento
+# Limpar dev
 RUN npm prune --production
 
 # Stage 2: Production
@@ -33,11 +33,11 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 
-# --- MUDANÇA 1: Copiar o arquivo .cjs ---
-COPY prisma.config.cjs ./prisma.config.cjs
+# --- MUDANÇA 1: Copiar o arquivo .mjs ---
+COPY prisma.config.mjs ./prisma.config.mjs
 
 # Expor porta
 EXPOSE 3000
 
-# --- MUDANÇA 2: Usar o flag --config apontando para o .cjs ---
-CMD ["/bin/sh", "-c", "npx prisma migrate deploy --config prisma.config.cjs && node dist/src/main"]
+# --- MUDANÇA 2: Usar o .mjs na configuração ---
+CMD ["/bin/sh", "-c", "npx prisma migrate deploy --config prisma.config.mjs && node dist/src/main"]

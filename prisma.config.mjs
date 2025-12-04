@@ -1,5 +1,5 @@
-// prisma.config.js
-module.exports = {
+// prisma.config.mjs
+export default {
   datasource: {
     provider: 'postgresql',
     url: process.env.DATABASE_URL,
