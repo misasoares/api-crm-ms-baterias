@@ -41,4 +41,4 @@ COPY prisma.config.js ./prisma.config.js
 EXPOSE 3000
 
 # Comando de inicialização
-CMD ["node", "dist/main"]
+CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/src/main"]
