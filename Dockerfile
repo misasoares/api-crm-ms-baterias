@@ -3,23 +3,23 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Copiar arquivos de dependência
+# 1. Copiar arquivos de dependência
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Instalar dependências
+# 2. Instalar dependências (incluindo devDependencies para o build)
 RUN npm ci
 
-# Gerar o Prisma Client
+# 3. Gerar o Prisma Client
 RUN npx prisma generate
 
-# Copiar o código fonte
+# 4. Copiar todo o código fonte
 COPY . .
 
-# Buildar a aplicação
+# 5. Buildar a aplicação
 RUN npm run build
 
-# Remover dependências de desenvolvimento
+# 6. Remover dependências de desenvolvimento para deixar a imagem leve
 RUN npm prune --production
 
 # Stage 2: Production
@@ -27,18 +27,19 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-# Copiar apenas o necessário do estágio de build
+# 7. Copiar apenas o necessário do estágio de build
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 
-# --- AQUI ESTÁ A MUDANÇA ---
-# Copie o arquivo de configuração JS que criamos (não o TS)
+# 8. Copiar o arquivo de configuração do Prisma (que deve estar na raiz do projeto)
 COPY prisma.config.js ./prisma.config.js 
 
-# Expor a porta da aplicação
+# 9. Expor a porta da aplicação
 EXPOSE 3000
 
-# Comando de inicialização
+# 10. COMANDO DE INICIALIZAÇÃO (Corrigido)
+# - Roda a migration primeiro
+# - Inicia o servidor no caminho correto (dist/src/main)
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/src/main"]
