@@ -1,30 +1,58 @@
 # CRM API
 
+> Developed using **Antigravity**, with image generation integrated directly in the IDE with **Nano Banana**.
+
 Simple CRM for customer and order management, featuring automated message sending.
 
-## Available Scripts
+## Documentation
 
-### Development
+- [Swagger UI](http://localhost:3000/api) - Interactive API documentation.
 
-- `npm run start`: Starts the application.
-- `npm run start:dev`: Starts the application in development mode (watch mode).
-- `npm run start:debug`: Starts the application in debug mode.
+<div align="center">
+  <img src="assets/image.png" alt="Swagger UI" width="800" />
+</div>
 
-### Code Quality
+> **Note**: The API documentation is not hosted publicly. You must run the project locally to access the interactive Swagger UI to analyze the endpoints.
 
-- `npm run lint`: Runs ESLint to check for code issues.
-- `npm run format`: Formats code using Prettier.
-- `npm run pr-check`: Runs a full check (format, lint, build, and tests) before opening a PR.
+## Features & Skills Showcase
 
-### Tests
+This API was built with a focus on **scalability**, **maintainability**, and **best practices**.
 
-- `npm run test`: Runs unit tests.
-- `npm run test:e2e`: Runs end-to-end tests.
-- `npm run test:cov`: Generates test coverage report.
+- **Modular Architecture**: Organized by feature (Customer, Order, Message) to ensure separation of concerns.
+- **Dependency Injection**: Heavy use of NestJS DI container for cleaner testing and loose coupling.
+- **Robust Validation**: `class-validator` and `class-transformer` (DTOs) ensure data integrity at the entry point.
+- **Global Error Handling**: Custom Exception Filters and Interceptors allow for consistent API responses.
+- **Database Management**: Prisma ORM with PostgreSQL for type-safe database interactions.
+- **Containerization**: Fully Dockerized (App + Database) for consistent local development and easy deployment.
+- **Automated Messaging**: Scheduled tasks using `check-orders-task.service` to automate customer interactions.
 
-### Build
+## Technical Stack
 
-- `npm run build`: Compiles the application for production.
+- **Framework**: [NestJS](https://nestjs.com/) (Node.js)
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Documentation**: Swagger (OpenAPI)
+- **Testing**: Jest (Unit & E2E)
+- **Containerization**: Docker & Docker Compose
+- **Authentication**: JWT & Passport
+- **Architecture**: REST API
+
+## Testing & Coverage
+
+The application is rigorously tested to ensure reliability.
+
+- **Unit Tests**: Covering Services and Controllers.
+- **E2E Tests**: Validating full API flows.
+- **Coverage**: ~45.29% (Testing Services & Controllers).
+
+Run tests with:
+
+```bash
+npm run test       # Unit tests
+npm run test:e2e   # End-to-End tests
+npm run test:cov   # Coverage report
+```
 
 ## Message Handling
 
