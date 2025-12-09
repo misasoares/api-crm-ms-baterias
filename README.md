@@ -1,49 +1,49 @@
 # CRM API
 
-CRM simples para gestão de clientes e pedidos para envio automatico de mensagem.
+Simple CRM for customer and order management, featuring automated message sending.
 
-## Scripts Disponíveis
+## Available Scripts
 
-### Desenvolvimento
+### Development
 
-- `npm run start`: Inicia a aplicação.
-- `npm run start:dev`: Inicia a aplicação em modo de desenvolvimento (watch mode).
-- `npm run start:debug`: Inicia a aplicação em modo de debug.
+- `npm run start`: Starts the application.
+- `npm run start:dev`: Starts the application in development mode (watch mode).
+- `npm run start:debug`: Starts the application in debug mode.
 
-### Qualidade de Código
+### Code Quality
 
-- `npm run lint`: Executa o ESLint para verificar problemas no código.
-- `npm run format`: Formata o código usando Prettier.
-- `npm run pr-check`: Executa uma verificação completa (format, lint, build e testes) antes de abrir um PR.
+- `npm run lint`: Runs ESLint to check for code issues.
+- `npm run format`: Formats code using Prettier.
+- `npm run pr-check`: Runs a full check (format, lint, build, and tests) before opening a PR.
 
-### Testes
+### Tests
 
-- `npm run test`: Executa os testes unitários.
-- `npm run test:e2e`: Executa os testes end-to-end.
-- `npm run test:cov`: Gera relatório de cobertura de testes.
+- `npm run test`: Runs unit tests.
+- `npm run test:e2e`: Runs end-to-end tests.
+- `npm run test:cov`: Generates test coverage report.
 
 ### Build
 
-- `npm run build`: Compila a aplicação para produção.
+- `npm run build`: Compiles the application for production.
 
-## Tratamento de Mensagens
+## Message Handling
 
-A API é responsável por fornecer feedback claro sobre o resultado das operações.
+The API is responsible for providing clear feedback on operation results.
 
-### Sucesso
+### Success
 
-Em caso de sucesso, a API retorna um objeto contendo:
+In case of success, the API returns an object containing:
 
 - `success`: `true`
-- `code`: Código HTTP (ex: 200, 201)
-- `data`: Dados da resposta (se houver)
-- `message`: Mensagem descritiva (ex: "Pedido criado com sucesso")
+- `code`: HTTP Code (e.g., 200, 201)
+- `data`: Response data (if any)
+- `message`: Descriptive message (e.g., "Order created successfully")
 
-### Erro
+### Error
 
-Em caso de erro, a API retorna um objeto contendo:
+In case of error, the API returns an object containing:
 
 - `success`: `false`
-- `code`: Código HTTP do erro (ex: 400, 404, 409)
-- `message`: Mensagem descritiva do erro (ex: "Este número de telefone já está vinculado a outro cliente.")
-- `invalidFields`: Lista de campos inválidos (em caso de erro de validação)
+- `code`: HTTP Error Code (e.g., 400, 404, 409)
+- `message`: Descriptive error message (e.g., "This phone number is already linked to another customer.")
+- `invalidFields`: List of invalid fields (in case of validation error)
