@@ -63,6 +63,49 @@ describe('OrdersService Integration', () => {
       const order = await prisma.order.findUnique({ where: { id: result.id } });
       expect(order).toBeDefined();
     });
+
+    it('should create order and new customer if customerId not provided', async () => {
+      const createOrderDto = {
+        type: OrderType.OIL,
+        vehicle: 'Car',
+        product: 'Oil',
+        customerName: 'New Cust',
+        customerPhone: '999888777',
+      };
+
+      const result = await service.create(createOrderDto);
+
+      expect(result).toBeDefined();
+      
+      const createdCustomer = await prisma.customer.findUnique({ where: { phone: '999888777' } });
+      expect(createdCustomer).toBeDefined();
+      expect(result.customerId).toBe(createdCustomer?.id);
+    });
+
+    it('should throw Error if customerId, name or phone missing', async () => {
+       const createOrderDto = {
+        type: OrderType.OIL,
+        vehicle: 'Car',
+        product: 'Oil',
+        // Missing customerId, Name, Phone
+      };
+      await expect(service.create(createOrderDto as any)).rejects.toThrow('Customer name and phone are required');
+    });
+
+    it('should throw ConflictException if creating new customer with existing phone', async () => {
+       // Create existing customer
+       await new CustomerBuilder().withPhone('111222333').build(prisma);
+
+       const createOrderDto = {
+        type: OrderType.OIL,
+        vehicle: 'Car',
+        product: 'Oil',
+        customerName: 'New Cust',
+        customerPhone: '111222333',
+      };
+
+      await expect(service.create(createOrderDto)).rejects.toThrow();
+    });
   });
 
   describe('findAll', () => {
@@ -86,6 +129,15 @@ describe('OrdersService Integration', () => {
       const result = await service.findOne(order.id);
       expect(result).toBeDefined();
       expect(result?.id).toBe(order.id);
+      expect(result?.customerId).toBe(customer.id);
     });
+  });
+
+  describe('remove', () => {
+      it('should remove an order', async () => {
+          jest.spyOn(prisma.order, 'delete').mockResolvedValue({ id: '1', customerId: 'cust1', type: OrderType.BATTERY, vehicle: 'car', product: 'prod', createdAt: new Date(), updatedAt: new Date() });
+          await service.remove('1');
+          expect(prisma.order.delete).toHaveBeenCalledWith({ where: { id: '1' } });
+      });
   });
 });

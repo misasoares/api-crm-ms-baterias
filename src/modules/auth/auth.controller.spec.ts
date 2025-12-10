@@ -59,6 +59,15 @@ describe('AuthController Integration', () => {
       const result = await controller.login(loginDto);
       expect(result.data).toHaveProperty('access_token');
     });
+
+    it('should throw UnauthorizedException with invalid credentials', async () => {
+      const loginDto = {
+        email: 'wrong@example.com',
+        password: 'wrongpassword',
+      };
+
+      await expect(controller.login(loginDto)).rejects.toThrow();
+    });
   });
 
   describe('register', () => {
@@ -76,6 +85,21 @@ describe('AuthController Integration', () => {
         where: { email: registerDto.email },
       });
       expect(user).toBeDefined();
+    });
+
+    it('should throw ConflictException if email already exists', async () => {
+      // Create user first
+      await new UserBuilder()
+        .withEmail('existing@example.com')
+        .build(prisma);
+
+      const registerDto = {
+        name: 'Another User',
+        email: 'existing@example.com',
+        password: 'password123',
+      };
+
+      await expect(controller.register(registerDto)).rejects.toThrow();
     });
   });
 });

@@ -63,6 +63,17 @@ describe('OrdersController Integration', () => {
       expect(result).toBeDefined();
       expect(result.data.vehicle).toBe(createOrderDto.vehicle);
     });
+
+    it('should throw Error if customer does not exist', async () => {
+       const createOrderDto = {
+        type: OrderType.OIL,
+        vehicle: 'Invalid Customer Order',
+        product: 'Product',
+        customerId: 'non-existent-customer-id',
+      };
+
+      await expect(controller.create(createOrderDto)).rejects.toThrow();
+    });
   });
 
   describe('findAll', () => {

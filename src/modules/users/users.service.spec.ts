@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service.js';
 import { PrismaModule } from '../../prisma/prisma.module.js';
@@ -46,6 +47,32 @@ describe('UsersService Integration', () => {
         where: { email: createUserDto.email },
       });
       expect(user).toBeDefined();
+    });
+
+    it('should throw ConflictException if duplicate email (Sad Path)', async () => {
+      const createUserDto = {
+        name: 'Duplicate User',
+        email: 'duplicate@example.com',
+        password: 'password123',
+      };
+
+      await service.create(createUserDto);
+
+      // Attempt to create again with same email
+      await expect(service.create(createUserDto)).rejects.toThrow();
+    });
+
+    it('should handle DB errors gracefully (Failure Simulation)', async () => {
+       const createUserDto = {
+        name: 'Error User',
+        email: 'error@example.com',
+        password: 'password123',
+      };
+      
+      // Spy on Prisma to simulate a connection failure
+      jest.spyOn(prisma.user, 'create').mockRejectedValueOnce(new Error('DB Connection Failed'));
+
+      await expect(service.create(createUserDto)).rejects.toThrow('DB Connection Failed');
     });
   });
 

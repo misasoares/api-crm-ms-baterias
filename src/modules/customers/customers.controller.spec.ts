@@ -66,6 +66,10 @@ describe('CustomersController Integration', () => {
       expect(result).toBeDefined();
       expect(result.id).toBe(customer.id);
     });
+
+    it('should throw NotFoundException if customer does not exist', async () => {
+      await expect(controller.findOne('non-existent-id')).rejects.toThrow();
+    });
   });
   describe('update', () => {
     it('should update a customer', async () => {
