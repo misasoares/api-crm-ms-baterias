@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto.js';
+import { UpdateOrderDto } from './dto/update-order.dto.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { OilRemindersService } from '../oil-reminders/oil-reminders.service.js';
 import { OrderType } from '@prisma/client';
@@ -66,6 +67,7 @@ export class OrdersService {
     return this.prisma.order.findMany({
       include: {
         customer: true,
+        reminder: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -76,6 +78,20 @@ export class OrdersService {
   findOne(id: string) {
     return this.prisma.order.findUnique({
       where: { id },
+      include: {
+        customer: true,
+        reminder: true,
+      },
+    });
+  }
+
+  update(id: string, updateOrderDto: UpdateOrderDto) {
+    return this.prisma.order.update({
+      where: { id },
+      data: {
+        vehicle: updateOrderDto.vehicle,
+        product: updateOrderDto.product,
+      },
     });
   }
 

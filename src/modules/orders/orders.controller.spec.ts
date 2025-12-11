@@ -65,7 +65,7 @@ describe('OrdersController Integration', () => {
     });
 
     it('should throw Error if customer does not exist', async () => {
-       const createOrderDto = {
+      const createOrderDto = {
         type: OrderType.OIL,
         vehicle: 'Invalid Customer Order',
         product: 'Product',
@@ -97,6 +97,41 @@ describe('OrdersController Integration', () => {
       const result = await controller.findOne(order.id);
       expect(result).toBeDefined();
       expect(result.id).toBe(order.id);
+    });
+  });
+
+  describe('update', () => {
+    it('should update an order vehicle and product', async () => {
+      const customer = await new CustomerBuilder().build(prisma);
+      const order = await new OrderBuilder()
+        .withCustomerId(customer.id)
+        .build(prisma);
+
+      const updateOrderDto = {
+        vehicle: 'Updated Vehicle',
+        product: 'Updated Product',
+      };
+
+      const result = await controller.update(order.id, updateOrderDto);
+      expect(result).toBeDefined();
+      expect(result.vehicle).toBe(updateOrderDto.vehicle);
+      expect(result.product).toBe(updateOrderDto.product);
+
+      const updatedOrder = await prisma.order.findUnique({
+        where: { id: order.id },
+      });
+      expect(updatedOrder?.vehicle).toBe(updateOrderDto.vehicle);
+    });
+
+    it('should throw error if order not found', async () => {
+      const updateOrderDto = {
+        vehicle: 'Updated Vehicle',
+        product: 'Updated Product',
+      };
+      // Prisma throws error if record not found during update
+      await expect(
+        controller.update('non-existent', updateOrderDto),
+      ).rejects.toThrow();
     });
   });
 });

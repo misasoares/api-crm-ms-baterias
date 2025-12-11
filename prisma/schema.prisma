@@ -56,7 +56,7 @@ model Order {
 
 model OilChangeReminder {
   id            String         @id @default(uuid())
-  order         Order          @relation(fields: [orderId], references: [id])
+  order         Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId       String         @unique
   scheduledFor  DateTime // Data agendada (6 meses + ajuste para dia útil)
   status        ReminderStatus @default(PENDING)

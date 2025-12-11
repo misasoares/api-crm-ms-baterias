@@ -23,6 +23,9 @@ export class OrderEntity implements Order {
   @ApiProperty()
   updatedAt: Date;
 
+  @ApiProperty({ required: false })
+  reminder?: any;
+
   constructor(partial: Partial<OrderEntity>) {
     Object.assign(this, partial);
   }

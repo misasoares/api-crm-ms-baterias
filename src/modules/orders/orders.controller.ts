@@ -6,9 +6,11 @@ import {
   Param,
   NotFoundException,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service.js';
 import { CreateOrderDto } from './dto/create-order.dto.js';
+import { UpdateOrderDto } from './dto/update-order.dto.js';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { OrderEntity } from './entities/order.entity.js';
 
@@ -41,6 +43,16 @@ export class OrdersController {
     if (!order) {
       throw new NotFoundException(`Order with ID ${id} not found`);
     }
+    return new OrderEntity(order);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({ type: OrderEntity })
+  async update(
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    const order = await this.ordersService.update(id, updateOrderDto);
     return new OrderEntity(order);
   }
   @Delete(':id')
