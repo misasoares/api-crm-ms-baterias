@@ -12,6 +12,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.enableCors({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     origin: configService.get('FRONTEND_URL') || 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,

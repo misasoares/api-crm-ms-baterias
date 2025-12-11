@@ -6,7 +6,7 @@ import { jest } from '@jest/globals';
 
 describe('OilRemindersCronService', () => {
   let cronService: OilRemindersCronService;
-  let oilRemindersService: OilRemindersService;
+  // let oilRemindersService: OilRemindersService;
 
   const mockOilRemindersService = {
     getPendingReminders: jest.fn(),
@@ -25,7 +25,7 @@ describe('OilRemindersCronService', () => {
     }).compile();
 
     cronService = module.get<OilRemindersCronService>(OilRemindersCronService);
-    oilRemindersService = module.get<OilRemindersService>(OilRemindersService);
+    // oilRemindersService = module.get<OilRemindersService>(OilRemindersService);
   });
 
   afterEach(() => {
@@ -39,21 +39,33 @@ describe('OilRemindersCronService', () => {
   describe('processPendingReminders', () => {
     it('should process pending reminders successfully', async () => {
       const reminders = [{ id: '1' }, { id: '2' }];
-      (mockOilRemindersService.getPendingReminders as jest.Mock<any>).mockResolvedValue(reminders);
-      (mockOilRemindersService.processReminder as jest.Mock<any>).mockResolvedValue(undefined);
+      (
+        mockOilRemindersService.getPendingReminders as jest.Mock<any>
+      ).mockResolvedValue(reminders);
+      (
+        mockOilRemindersService.processReminder as jest.Mock<any>
+      ).mockResolvedValue(undefined);
 
       await cronService.processPendingReminders();
 
       expect(mockOilRemindersService.getPendingReminders).toHaveBeenCalled();
       expect(mockOilRemindersService.processReminder).toHaveBeenCalledTimes(2);
-      expect(mockOilRemindersService.processReminder).toHaveBeenCalledWith('1', mockWhatsappService);
-      expect(mockOilRemindersService.processReminder).toHaveBeenCalledWith('2', mockWhatsappService);
+      expect(mockOilRemindersService.processReminder).toHaveBeenCalledWith(
+        '1',
+        mockWhatsappService,
+      );
+      expect(mockOilRemindersService.processReminder).toHaveBeenCalledWith(
+        '2',
+        mockWhatsappService,
+      );
     });
 
     it('should handle errors during processing independently', async () => {
       const reminders = [{ id: '1' }, { id: '2' }];
-      (mockOilRemindersService.getPendingReminders as jest.Mock<any>).mockResolvedValue(reminders);
-      
+      (
+        mockOilRemindersService.getPendingReminders as jest.Mock<any>
+      ).mockResolvedValue(reminders);
+
       // First fails, second succeeds
       (mockOilRemindersService.processReminder as jest.Mock<any>)
         .mockRejectedValueOnce(new Error('Process Failed'))
@@ -65,7 +77,9 @@ describe('OilRemindersCronService', () => {
     });
 
     it('should handle error getting reminders', async () => {
-      (mockOilRemindersService.getPendingReminders as jest.Mock<any>).mockRejectedValue(new Error('DB Error'));
+      (
+        mockOilRemindersService.getPendingReminders as jest.Mock<any>
+      ).mockRejectedValue(new Error('DB Error'));
 
       await cronService.processPendingReminders();
 

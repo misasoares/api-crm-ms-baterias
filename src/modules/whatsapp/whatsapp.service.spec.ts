@@ -3,16 +3,17 @@ import { WhatsappService } from './whatsapp.service.js';
 import { jest } from '@jest/globals';
 
 // Mock fetch globally
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 global.fetch = jest.fn() as any;
 
 describe('WhatsappService', () => {
   let service: WhatsappService;
 
   beforeEach(async () => {
-     // Mock env vars
-     process.env.STEVO_API_URL = 'http://api.test';
-     process.env.STEVO_API_TOKEN = 'token';
-     process.env.STEVO_INSTANCE_ID = 'instance';
+    // Mock env vars
+    process.env.STEVO_API_URL = 'http://api.test';
+    process.env.STEVO_API_TOKEN = 'token';
+    process.env.STEVO_INSTANCE_ID = 'instance';
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [WhatsappService],
@@ -30,22 +31,22 @@ describe('WhatsappService', () => {
   });
 
   it('should throw error if config is missing', async () => {
-      delete process.env.STEVO_API_URL;
-      // We need to re-instantiate, so configure testing module again
-       const moduleBuilder = Test.createTestingModule({
-        providers: [WhatsappService],
-      });
+    delete process.env.STEVO_API_URL;
+    // We need to re-instantiate, so configure testing module again
+    const moduleBuilder = Test.createTestingModule({
+      providers: [WhatsappService],
+    });
 
-      try {
-        await moduleBuilder.compile();
-      } catch (e) {
-          // NestJS container might wrap error or it might happen on instantiation
-      }
-      // Actually WhatsappService probably checks in constructor.
-      // NestJS instantiates interactively.
-      
-      // Let's manually check instantiation as Nest catches startup errors
-      expect(() => new WhatsappService()).toThrow();
+    try {
+      await moduleBuilder.compile();
+    } catch {
+      // NestJS container might wrap error or it might happen on instantiation
+    }
+    // Actually WhatsappService probably checks in constructor.
+    // NestJS instantiates interactively.
+
+    // Let's manually check instantiation as Nest catches startup errors
+    expect(() => new WhatsappService()).toThrow();
   });
 
   describe('sendMessage', () => {
@@ -67,12 +68,13 @@ describe('WhatsappService', () => {
       expect(global.fetch).toHaveBeenCalledWith(
         'http://api.test/chat/send/text',
         expect.objectContaining({
-            method: 'POST',
-            headers: expect.objectContaining({
-                'Content-Type': 'application/json',
-                token: 'token'
-            })
-        })
+          method: 'POST',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+            token: 'token',
+          }),
+        }),
       );
     });
 
@@ -83,13 +85,19 @@ describe('WhatsappService', () => {
         text: jest.fn().mockResolvedValue('Internal Error' as never),
       });
 
-      await expect(service.sendMessage('123')).rejects.toThrow('Failed to send WhatsApp message');
+      await expect(service.sendMessage('123')).rejects.toThrow(
+        'Failed to send WhatsApp message',
+      );
     });
 
-     it('should throw InternalServerErrorException on network failure', async () => {
-      (global.fetch as jest.Mock<any>).mockRejectedValue(new Error('Network Error'));
+    it('should throw InternalServerErrorException on network failure', async () => {
+      (global.fetch as jest.Mock<any>).mockRejectedValue(
+        new Error('Network Error'),
+      );
 
-      await expect(service.sendMessage('123')).rejects.toThrow('Failed to send WhatsApp message');
+      await expect(service.sendMessage('123')).rejects.toThrow(
+        'Failed to send WhatsApp message',
+      );
     });
   });
 });

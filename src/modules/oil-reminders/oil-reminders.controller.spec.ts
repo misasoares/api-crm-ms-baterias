@@ -5,7 +5,7 @@ import { jest } from '@jest/globals';
 
 describe('OilRemindersController', () => {
   let controller: OilRemindersController;
-  let service: OilRemindersService;
+  // let service: OilRemindersService;
 
   const mockOilRemindersService = {
     findAll: jest.fn(),
@@ -24,7 +24,7 @@ describe('OilRemindersController', () => {
     }).compile();
 
     controller = module.get<OilRemindersController>(OilRemindersController);
-    service = module.get<OilRemindersService>(OilRemindersService);
+    // service = module.get<OilRemindersService>(OilRemindersService);
   });
 
   it('should be defined', () => {
@@ -34,7 +34,9 @@ describe('OilRemindersController', () => {
   describe('findAll', () => {
     it('should return all reminders', async () => {
       const result = [{ id: '1' }];
-      (mockOilRemindersService.findAll as jest.Mock<any>).mockResolvedValue(result);
+      (mockOilRemindersService.findAll as jest.Mock<any>).mockResolvedValue(
+        result,
+      );
 
       expect(await controller.findAll()).toBe(result);
       expect(mockOilRemindersService.findAll).toHaveBeenCalled();
@@ -44,7 +46,9 @@ describe('OilRemindersController', () => {
   describe('getStats', () => {
     it('should return stats', async () => {
       const result = { total: 10 };
-      (mockOilRemindersService.getStats as jest.Mock<any>).mockResolvedValue(result);
+      (mockOilRemindersService.getStats as jest.Mock<any>).mockResolvedValue(
+        result,
+      );
 
       expect(await controller.getStats()).toBe(result);
       expect(mockOilRemindersService.getStats).toHaveBeenCalled();

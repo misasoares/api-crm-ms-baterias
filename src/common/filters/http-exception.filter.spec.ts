@@ -29,6 +29,7 @@ describe('HttpExceptionFilter', () => {
   it('should catch HttpException and format response', () => {
     const exception = new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     filter.catch(exception, mockArgumentsHost as any);
 
     expect(mockStatus).toHaveBeenCalledWith(HttpStatus.FORBIDDEN);
@@ -42,6 +43,7 @@ describe('HttpExceptionFilter', () => {
   it('should catch unknown exception and format as Internal Server Error', () => {
     const exception = new Error('Random Error');
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     filter.catch(exception, mockArgumentsHost as any);
 
     expect(mockStatus).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,14 +55,18 @@ describe('HttpExceptionFilter', () => {
   });
 
   it('should handle object response messages', () => {
-      const exception = new HttpException({ message: ['error1', 'error2'] }, HttpStatus.BAD_REQUEST);
+    const exception = new HttpException(
+      { message: ['error1', 'error2'] },
+      HttpStatus.BAD_REQUEST,
+    );
 
-       filter.catch(exception, mockArgumentsHost as any);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    filter.catch(exception, mockArgumentsHost as any);
 
-       expect(mockJson).toHaveBeenCalledWith({
-          success: false,
-          message: 'error1, error2',
-          code: HttpStatus.BAD_REQUEST
-       });
+    expect(mockJson).toHaveBeenCalledWith({
+      success: false,
+      message: 'error1, error2',
+      code: HttpStatus.BAD_REQUEST,
+    });
   });
 });

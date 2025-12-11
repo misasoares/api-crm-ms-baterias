@@ -1,6 +1,6 @@
 import { ResponseInterceptor } from './response.interceptor.js';
 import { of } from 'rxjs';
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 
 describe('ResponseInterceptor', () => {
   let interceptor: ResponseInterceptor<any>;
@@ -21,19 +21,22 @@ describe('ResponseInterceptor', () => {
       }),
     };
 
-    interceptor.intercept(mockContext as any, mockHandler as any).subscribe((result) => {
-      expect(result).toEqual({
-        success: true,
-        data: { prop: 'value' },
-        code: 200,
-        message: 'Operação realizada com sucesso',
+    interceptor
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      .intercept(mockContext as any, mockHandler as any)
+      .subscribe((result) => {
+        expect(result).toEqual({
+          success: true,
+          data: { prop: 'value' },
+          code: 200,
+          message: 'Operação realizada com sucesso',
+        });
+        done();
       });
-      done();
-    });
   });
 
   it('should transform response with custom message', (done) => {
-     const mockHandler = {
+    const mockHandler = {
       handle: () => of({ message: 'Custom', data: { id: 1 } }),
     };
 
@@ -44,14 +47,17 @@ describe('ResponseInterceptor', () => {
       }),
     };
 
-    interceptor.intercept(mockContext as any, mockHandler as any).subscribe((result) => {
-      expect(result).toEqual({
-        success: true,
-        data: { id: 1 },
-        code: 201,
-        message: 'Custom',
+    interceptor
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      .intercept(mockContext as any, mockHandler as any)
+      .subscribe((result) => {
+        expect(result).toEqual({
+          success: true,
+          data: { id: 1 },
+          code: 201,
+          message: 'Custom',
+        });
+        done();
       });
-      done();
-    });
   });
 });

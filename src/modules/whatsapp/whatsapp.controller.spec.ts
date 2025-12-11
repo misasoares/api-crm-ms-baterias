@@ -5,7 +5,7 @@ import { jest } from '@jest/globals';
 
 describe('WhatsappController', () => {
   let controller: WhatsappController;
-  let service: WhatsappService;
+  // let service: WhatsappService;
 
   const mockWhatsappService = {
     sendMessage: jest.fn(),
@@ -23,7 +23,7 @@ describe('WhatsappController', () => {
     }).compile();
 
     controller = module.get<WhatsappController>(WhatsappController);
-    service = module.get<WhatsappService>(WhatsappService);
+    // service = module.get<WhatsappService>(WhatsappService);
   });
 
   it('should be defined', () => {
@@ -34,7 +34,9 @@ describe('WhatsappController', () => {
     it('should send message', async () => {
       const dto = { phone: '123', message: 'Hello' };
       const response = { success: true };
-      (mockWhatsappService.sendMessage as jest.Mock<any>).mockResolvedValue(response);
+      (mockWhatsappService.sendMessage as jest.Mock<any>).mockResolvedValue(
+        response,
+      );
 
       expect(await controller.sendMessage(dto)).toBe(response);
       expect(mockWhatsappService.sendMessage).toHaveBeenCalledWith(dto.phone);

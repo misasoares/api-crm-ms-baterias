@@ -89,9 +89,7 @@ describe('AuthController Integration', () => {
 
     it('should throw ConflictException if email already exists', async () => {
       // Create user first
-      await new UserBuilder()
-        .withEmail('existing@example.com')
-        .build(prisma);
+      await new UserBuilder().withEmail('existing@example.com').build(prisma);
 
       const registerDto = {
         name: 'Another User',

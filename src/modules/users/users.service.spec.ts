@@ -63,16 +63,20 @@ describe('UsersService Integration', () => {
     });
 
     it('should handle DB errors gracefully (Failure Simulation)', async () => {
-       const createUserDto = {
+      const createUserDto = {
         name: 'Error User',
         email: 'error@example.com',
         password: 'password123',
       };
-      
-      // Spy on Prisma to simulate a connection failure
-      jest.spyOn(prisma.user, 'create').mockRejectedValueOnce(new Error('DB Connection Failed'));
 
-      await expect(service.create(createUserDto)).rejects.toThrow('DB Connection Failed');
+      // Spy on Prisma to simulate a connection failure
+      jest
+        .spyOn(prisma.user, 'create')
+        .mockRejectedValueOnce(new Error('DB Connection Failed'));
+
+      await expect(service.create(createUserDto)).rejects.toThrow(
+        'DB Connection Failed',
+      );
     });
   });
 
