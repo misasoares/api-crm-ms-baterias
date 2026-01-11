@@ -57,37 +57,31 @@ export class WhatsappService {
   }
 
   async getQrCode() {
-    // First, try to get connection status to check if instance exists
     try {
       const status = await this.getConnectionStatus();
-      
-      // If instance exists but is closed or unconnected, connect it
-      const endpoint = `${this.apiUrl}/instance/connect/${this.instanceName}`;
-      const headers = {
-        apikey: this.apiToken as string,
-      };
 
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        headers,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to connect instance: ${response.status}`);
+      // If instance exists and is connected, return connection info
+      if (status?.instance?.state === 'open') {
+        const endpoint = `${this.apiUrl}/instance/connect/${this.instanceName}`;
+        const headers = {
+          apikey: this.apiToken as string,
+        };
+        const response = await fetch(endpoint, { method: 'GET', headers });
+        if (!response.ok) {
+           throw new Error(`Failed to connect instance: ${response.status}`);
+        }
+        return await response.json();
       }
 
-      return await response.json();
+      // If instance exists but is NOT open (close, qrcode, etc), 
+      // Force re-creation to ensure a fresh QR code is generated.
+      console.log('Instance exists but not connected. Re-creating for fresh QR...');
+      await this.deleteInstance();
+      return this.createInstance();
+
     } catch (error) {
-      // If fetch fails (likely 404 instance not found in getConnectionStatus), create it
-      // Note: getConnectionStatus throws InternalServerErrorException on error, 
-      // but we need to distinguish 404. 
-      // Refactoring getConnectionStatus to return null or specific error would be cleaner,
-      // but here we can try-catch and assume if it failed we might need to create.
-      // However, the cleanest way is to assume if "getConnectionStatus" failed specifically because of instance specific error.
-      
-      // Let's modify logic: Try to create if it doesn't exist. 
-      // For simplicity in this existing structure: 
-      console.log('Attempting to create instance because fetching status/connect failed or instance missing...');
+      // If fetching status failed (e.g. 404), create new instance
+      console.log('Attempting to create instance because fetching status failed or instance missing...');
       return this.createInstance();
     }
   }
