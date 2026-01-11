@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete } from '@nestjs/common';
 import { WhatsappService } from './whatsapp.service.js';
 import { SendMessageDto } from './dto/send-message.dto.js';
 
@@ -14,6 +14,11 @@ export class WhatsappController {
   @Get('qr')
   async getQrCode() {
     return this.whatsappService.getQrCode();
+  }
+
+  @Delete('disconnect')
+  async disconnect() {
+    return this.whatsappService.deleteInstance();
   }
 
   @Post('send')
