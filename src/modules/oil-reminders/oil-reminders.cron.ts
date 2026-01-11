@@ -15,7 +15,7 @@ export class OilRemindersCronService {
   // Executar a cada minuto em desenvolvimento, ou às 9h (seg-sex) em produção
   @Cron(
     process.env.NODE_ENV === 'development'
-      ? CronExpression.EVERY_MINUTE
+      ? '*/30 * * * * *'
       : '0 9 * * 1-5',
     {
       timeZone: 'America/Sao_Paulo',

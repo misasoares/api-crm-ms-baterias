@@ -45,9 +45,9 @@ export class OilRemindersService {
   private calculateScheduledDate(orderDate: Date): Date {
     const date = new Date(orderDate);
 
-    // Em desenvolvimento: agendar para 2 minutos depois
+    // Em desenvolvimento: agendar para 30 segundos depois
     if (process.env.NODE_ENV === 'development') {
-      date.setMinutes(date.getMinutes() + 2);
+      date.setSeconds(date.getSeconds() + 30);
       return date;
     }
 
@@ -149,17 +149,13 @@ export class OilRemindersService {
         reminder.order.customer.phone,
         message,
       )) as {
-        code: number;
-        data: {
-          Details: string;
-          Id: string;
-          Timestamp: number;
+        key: {
+          id: string;
         };
-        success: boolean;
       };
 
       // Sucesso
-      await this.markAsSent(reminder.id, response.data.Id);
+      await this.markAsSent(reminder.id, response.key.id);
       this.logger.log(`Reminder ${reminderId} sent successfully`);
     } catch (error) {
       // Incrementar tentativas
